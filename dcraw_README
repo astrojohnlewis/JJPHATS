@@ -1,0 +1,10 @@
+
+gcc -o dcraw -O4 dcraw.c -lm -DNODEPS
+
+creates file dcraw
+
+COPY to /usr/local/bin
+
+cp dcraw /usr/local/bin/
+
+
