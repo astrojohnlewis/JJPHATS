@@ -276,7 +276,7 @@ def cr2fits(cr2FileName,colorInput):
         print("Version : %s" % version) 
         raise SystemExit
 
-    colors = {0:"Red",1:"Green",2:"Blue",3:"Raw"}
+    colors = {0:"Red",1:"Green",2:"Blue",3:"Raw",4:"All"}
     colorState = any([True for i in colors.keys() if i == colorInput])
 
     if colorState == False :
@@ -332,18 +332,23 @@ def cr2fits(cr2FileName,colorInput):
     print("Reading the PPM output...")
     try :
         #Reading the PPM
-        if colorInput == 3:
+        if colorInput == 3 :
             ppm_name = cr2FileName.split('.')[0] + '.pgm'
         else:
             ppm_name = cr2FileName.split('.')[0] + '.ppm'
         im_ppm = NetpbmFile(ppm_name).asarray()
         os.remove(ppm_name)
+        if colorInput == 4:
+            #Extracting the Single Channel Only
+            #im_mono = numpy.zeros((im_ppm.shape[0],im_ppm.shape[1]),dtype=numpy.uint16)
+            im_mono = im_ppm.sum(axis=2)
+            im_ppm=im_mono
     except :
         print("ERROR : Something went wrong while reading the PPM file.")
         raise SystemExit
 
-
-    if colorInput != 3:    
+   
+    if (colorInput != 3 and colorInput !=4):    
         print("Extracting %s color channel... (may take a while)" % colors[colorInput]) 
         try :
             #Extracting the Single Channel Only
@@ -358,7 +363,7 @@ def cr2fits(cr2FileName,colorInput):
     print("Creating the FITS file...")
     try :
     #Creating the FITS File
-        if colorInput == 3:
+        if (colorInput == 3 or colorInput == 4):
             hdu = pyfits.PrimaryHDU(im_ppm)
             tag = 'raw'
         else:
@@ -391,7 +396,7 @@ def cr2fits(cr2FileName,colorInput):
 
 def mono(cr2FileName) : 
     try :
-        cr2fits(cr2FileName,3)
+        cr2fits(cr2FileName,4)
     except :
         print "Please enter a valid file name"
     print("Done")
