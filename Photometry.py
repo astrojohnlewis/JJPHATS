@@ -21,4 +21,5 @@ def photometry(i,ap):
   	from photutils import aperture_photometry
   	phot_table=aperture_photometry(file,apertures)
 	from astropy.table import Table
+	return phot_table
 	phot_table.write(h+"_table", format="ipac")
