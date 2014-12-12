@@ -16,12 +16,12 @@
 sourceweb = "http://github.com/astrojohnlewis/JJPHATS"
 version = "2.0.0"
 
-try :    
+try :
     from copy import deepcopy
     import numpy, subprocess, sys, re, datetime, math
     import astropy.io.fits as pyfits
     import os
-    
+
 except :
     print("ERROR : Missing some libraries!")
     print("Check if you have the following :\n\tnumpy\n\tpyfits\n\tdcraw")
@@ -263,7 +263,7 @@ if __name__ == '__main__':
 def cr2fits(cr2FileName,colorInput):
     try :
         cr2FileName = cr2FileName
-        colorInput = colorInput # 0=R 1=G 2=B 3=raw
+        colorInput = colorInput # 0=R 1=G 2=B 3=raw 4=all
     except :
         print("ERROR : You probably don't know how to use it?")
         print("./cr2fits.py <cr2filename> <color-index>")
@@ -273,26 +273,26 @@ def cr2fits(cr2FileName,colorInput):
         print("\tmyimage.ppm : The PPM, which you can delete.")
         print("\tmyimage-G.fits : The FITS image in the Green channel, which is the purpose!")
         print("For details : http://github.com/eaydin/cr2fits")
-        print("Version : %s" % version) 
+        print("Version : %s" % version)
         raise SystemExit
 
     colors = {0:"Red",1:"Green",2:"Blue",3:"Raw",4:"All"}
     colorState = any([True for i in colors.keys() if i == colorInput])
 
     if colorState == False :
-        print("ERROR : Color value can be set as 0:Red, 1:Green, 2:Blue, 3:Raw.")
-        raise SystemExit    
+        print("ERROR : Color value can be set as 0:Red, 1:Green, 2:Blue, 3:Raw, 4:All.")
+        raise SystemExit
 
     print("Reading file %s...") % cr2FileName
     try :
         #Converting the CR2 to PPM
         if colorInput == 3:
-            p = subprocess.Popen(["dcraw","-D","-4",cr2FileName]).communicate()[0]
+            p = subprocess.Popen(["./dcraw","-D","-4",cr2FileName]).communicate()[0]
         else:
-            p = subprocess.Popen(["dcraw","-6",cr2FileName]).communicate()[0]
+            p = subprocess.Popen(["./dcraw","-6",cr2FileName]).communicate()[0]
 
         #Getting the EXIF of CR2 with dcraw
-        p = subprocess.Popen(["dcraw","-i","-v",cr2FileName],stdout=subprocess.PIPE)
+        p = subprocess.Popen(["./dcraw","-i","-v",cr2FileName],stdout=subprocess.PIPE)
         cr2header = p.communicate()[0]
 
         #Catching the Timestamp
@@ -347,9 +347,9 @@ def cr2fits(cr2FileName,colorInput):
         print("ERROR : Something went wrong while reading the PPM file.")
         raise SystemExit
 
-   
-    if (colorInput != 3 and colorInput !=4):    
-        print("Extracting %s color channel... (may take a while)" % colors[colorInput]) 
+
+    if (colorInput != 3 and colorInput !=4):
+        print("Extracting %s color channel... (may take a while)" % colors[colorInput])
         try :
             #Extracting the Single Channel Only
             im_mono = numpy.zeros((im_ppm.shape[0],im_ppm.shape[1]),dtype=numpy.uint16)
@@ -381,8 +381,8 @@ def cr2fits(cr2FileName,colorInput):
         hdu.header.add_comment('cr2fits.py version %s'%(version))
         hdu.header.add_comment('EXPTIME is in seconds.')
         hdu.header.add_comment('APERTUR is the ratio as in f/APERTUR')
-        hdu.header.add_comment('FOCAL is in mm')    
-    except : 
+        hdu.header.add_comment('FOCAL is in mm')
+    except :
         print("ERROR : Something went wrong while creating the FITS file.")
         raise SystemExit
 
@@ -394,9 +394,9 @@ def cr2fits(cr2FileName,colorInput):
         raise SystemExit
     print("Conversion successful!")
 
-def mono(cr2FileName) : 
+def mono(cr2FileName) :
     try :
-        cr2fits(cr2FileName,4)
+        cr2fits(cr2FileName,3)
     except :
         print "Please enter a valid file name"
     print("Done")
