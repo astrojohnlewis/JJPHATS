@@ -1,4 +1,4 @@
-def photometry(i,ap):
+def photometry(i,ap,sig):
   	import numpy as np
 	import astropy.io.fits as fits
 	import photutils
@@ -13,7 +13,7 @@ def photometry(i,ap):
   	flat_file=file.ravel()
   	sigma=np.std(flat_file)
   	floor=np.median(flat_file)
-  	limit=floor+(1*sigma)
+  	limit=floor+(sig*sigma)
 
   #Perform photometry
   	coords=photutils.find_peaks(file,limit)  #goes (y,x)
