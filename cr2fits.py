@@ -396,7 +396,7 @@ def cr2fits(cr2FileName,colorInput):
 
 def mono(cr2FileName) :
     try :
-        cr2fits(cr2FileName,3)
+        cr2fits(cr2FileName,4)
     except :
         print "Please enter a valid file name"
     print("Done")
