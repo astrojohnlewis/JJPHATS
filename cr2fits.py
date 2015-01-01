@@ -365,7 +365,7 @@ def cr2fits(cr2FileName,colorInput):
     #Creating the FITS File
         if (colorInput == 3 or colorInput == 4):
             hdu = pyfits.PrimaryHDU(im_ppm)
-            tag = 'raw'
+            tag = colors[colorInput].lower()
         else:
             hdu = pyfits.PrimaryHDU(im_mono)
             tag = colors[colorInput][0]
