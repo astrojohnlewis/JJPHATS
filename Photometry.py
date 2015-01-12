@@ -46,7 +46,7 @@ def photometry(i,ap,sig):
 	print "Displaying Plot of stars and images"
 	print "Either save or close image to continue"
 	import matplotlib.pylab as plt
-	plt.imshow(image, cmap='gray_r', origin='lower')
+	plt.imshow(file, cmap='gray_r', origin='lower')
 	apertures.plot(color='blue', lw=1.5, alpha=0.5)
 	print "Returning tuple (phot_table,apertures) ..."
 	return phot_table,apertures
