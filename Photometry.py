@@ -40,14 +40,14 @@ def photometry(filename,ap,signf):
 	print "Displaying Plot of stars and images"
 	import matplotlib.pylab as plt
 	#Display apertures over image
-	import matplotlib.pylab as plt
+	#import matplotlib.pylab as plt
 	#plt.imshow(image, cmap='gray_r', origin='lower')
 	#apertures.plot(color='blue', lw=1.5, alpha=0.5)
-	plt.imshow(image,cmap='gray_r')
-	plt.plot(phot_table['ycenter'],phot_table['xcenter'],'o',mfc='None',mec='b')
-	plt.xlim(0,image.shape[1])
-	plt.ylim(0,image.shape[0])
-	plt.show()
+	#plt.imshow(image,cmap='gray_r')
+	#plt.plot(phot_table['ycenter'],phot_table['xcenter'],'o',mfc='None',mec='b')
+	#plt.xlim(0,image.shape[1])
+	#plt.ylim(0,image.shape[0])
+	#plt.show()
 	print "Returning tuple (phot_table,apertures) ..."
-	return phot_table,apertures
+	return phot_table, apertures, image
 	
