@@ -32,7 +32,7 @@ def photometry(filename,ap,signf):
 	#Perform photometry
 	print "Finding peaks ..."
 	coords=photutils.find_peaks(image,limit)  #returns coords of peaks
-	apertures=photutils.CircularAperture(coords, r = ap)  #puts apertures around peaks
+	apertures = photutils.CircularAperture(np.fliplr(coords), r = ap)  #puts apertures around peaks
 	print "Doing Photometry Now..."
 	phot_table=photutils.aperture_photometry(image, apertures) #do photometry
 	#print "Writing IPAC table"
